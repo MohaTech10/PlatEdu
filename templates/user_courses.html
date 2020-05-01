@@ -1,0 +1,43 @@
+{% extends 'Main.html' %}
+
+{% block content %}
+
+<div class="container">
+   <h3 class="pb-3 mb-4 mt-4 font-italic border-bottom">
+      All Courses
+   </h3>
+
+   <div class="row">
+{#   {% if request.user.is_anonymous  %}#}
+{#    {% for e in all_courses %}#}
+{#        {{ e.course_name }}#}
+{#    {% endfor %}#}
+{#    {% else %}#}
+
+       {% for each_course in current_user_courses %}
+
+          <div class="col-md-6">
+             <div class="card flex-md-row mb-4 shadow-sm h-md-250">
+                <div class="card-body d-flex flex-column align-items-start">
+                   <strong class="d-inline-block mb-2 text-dark"><b>{{ each_course.course_name }}</b></strong>
+                   <h6 class="mb-0 ">
+                      <a class="btn btn-warning" href="{% url 'course_detail' each_course.id %}" >Continue watching</a>
+                   </h6>
+
+                   <div class="mb-1 text-muted small "></div>
+                   <p class="card-text mb-auto" style="color: #202020">{{each_course.course_description}}</p>
+
+                </div>
+                <img class="card-img-right flex-auto d-none d-lg-block" alt="Thumbnail [200x250]" src="//placeimg.com/250/250/arch" style="width: 200px; height: 250px;">
+             </div>
+          </div>
+
+           {% endfor %}
+
+{#{% for i in a_course_sections %}#}
+{#    <p>{{ i.section_name }}</p>#}
+{#   {% endfor %}#}
+
+   </div>
+</div>
+{% endblock %}

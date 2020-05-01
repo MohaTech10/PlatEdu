@@ -1,0 +1,77 @@
+
+{% extends 'Main.html' %}
+{% block content %}
+{#    {% for every_thing_the_instance_has in one_course.getCourseSections %}#}
+{#    <details>#}
+{#    <summary style="color: black">{{ every_thing_the_instance_has.section_name }}</summary>#}
+{#    <ul style="color: black">#}
+{#        {% for lesson in every_thing_the_instance_has.getTheSectionLessons %}#}
+{#            <a class="bt-small btn-danger" href="{% url 'lesson_detail' lesson.lesson_id %}">{{ lesson.lesson_name }}</a>#}
+{#            {% endfor %}#}
+{#    </ul>#}
+{#    </details>#}
+{#    {% endfor %}#}
+
+    <div class="container">
+   <h3 class="pb-3 mb-4 mt-4 font-italic border-bottom">
+       The Journey
+   </h3>
+   <div class="row">
+
+       {% for every_thing_the_instance_has in one_course.getCourseSections %}
+      <div class="col-md-6">
+         <div class="card flex-md-row mb-4 shadow-sm h-md-250">
+            <div class="card-body d-flex flex-column align-items-start">
+               <strong class="d-inline-block mb-2 text-dark"><b>{{ every_thing_the_instance_has.section_name }}</b></strong>
+               <h6 class="mb-0 ">
+{#                  <a class="btn btn-warning" href="#" >Detail</a>#}
+                   {% for lesson in every_thing_the_instance_has.getTheSectionLessons %}
+                       {% if one_course not in request.user.student.getStudentCourses or request.user.is_anonymous%}
+
+
+                           {% if lesson.is_previewed %}
+                               <button class="btn btn-purple btn-sm">Preview</button>
+                           <a class="btn btn-warning" style="font-size: 17px" href="{% url 'lesson_detail' lesson.lesson_id %}">{{ lesson.lesson_name }}</a>
+
+                                                          <svg class="bi bi-unlock-fill" width="1em" height="1em" style="color: #000000" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path d="M.5 9a2 2 0 012-2h7a2 2 0 012 2v5a2 2 0 01-2 2h-7a2 2 0 01-2-2V9z"></path>
+  <path fill-rule="evenodd" d="M8.5 4a3.5 3.5 0 117 0v3h-1V4a2.5 2.5 0 00-5 0v3h-1V4z" clip-rule="evenodd"></path>
+</svg>
+                               {% else %}
+                                                          <button class="btn btn-warning">{{ lesson.lesson_name }}</button>
+<svg class="bi bi-lock-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" style="color: black" xmlns="http://www.w3.org/2000/svg">
+  <rect width="11" height="9" x="2.5" y="7" rx="2"/>
+  <path fill-rule="evenodd" d="M4.5 4a3.5 3.5 0 117 0v3h-1V4a2.5 2.5 0 00-5 0v3h-1V4z" clip-rule="evenodd"/>
+</svg>
+                               {% endif %}
+
+                       {% else %}
+                           <a class="btn btn-warning" href="{% url 'lesson_detail' lesson.lesson_id %}">{{ lesson.lesson_name }}</a>
+                           <svg class="bi bi-unlock-fill" width="1em" height="1em" style="color: #000000" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path d="M.5 9a2 2 0 012-2h7a2 2 0 012 2v5a2 2 0 01-2 2h-7a2 2 0 01-2-2V9z"/>
+  <path fill-rule="evenodd" d="M8.5 4a3.5 3.5 0 117 0v3h-1V4a2.5 2.5 0 00-5 0v3h-1V4z" clip-rule="evenodd"/>
+</svg>
+                       {% endif %}
+                       <hr/>
+                       {% endfor %}
+               </h6>
+
+               <div class="mb-1 text-muted small "></div>
+{#               <p class="card-text mb-auto" style="color: #202020">{{ every_thing_the_instance_has }}</p>#}
+               <a class="btn btn-primary btn-sm" role="button" href="#" >Enrol Now</a>
+            </div>
+            <img class="card-img-right flex-auto d-none d-lg-block" alt="Thumbnail [200x250]" src="//placeimg.com/250/250/arch" style="width: 200px; height: 250px;">
+         </div>
+      </div>
+       {% endfor %}
+{#{% for i in a_course_sections %}#}
+{#    <p>{{ i.section_name }}</p>#}
+{#   {% endfor %}#}
+
+   </div>
+</div>
+
+
+
+{% endblock %}
+

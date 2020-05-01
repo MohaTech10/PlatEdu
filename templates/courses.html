@@ -1,0 +1,100 @@
+{% extends 'Main.html' %}
+
+
+
+
+{% block content %}
+
+  <!--Main layout-->
+  <main class="mt-5 pt-5">
+    <div class="container">
+
+
+      <!--Section: Jumbotron-->
+      <section class="card wow fadeIn" style="background-image: url(https://mdbootstrap.com/img/Photos/Others/gradient1.jpg);">
+
+        <!-- Content -->
+        <div class="card-body text-white text-center py-5 px-5 my-5">
+
+          <h1 class="mb-4">
+            <strong>Learn Bootstrap 4 with MDB</strong>
+          </h1>
+          <p>
+            <strong>Best & free guide of responsive web design</strong>
+          </p>
+          <p class="mb-4">
+            <strong>The most comprehensive tutorial for the Bootstrap 4. Loved by over 500 000 users. Video and written
+              versions available. Create your own, stunning website.</strong>
+          </p>
+          <a target="_blank" href="https://mdbootstrap.com/education/bootstrap/" class="btn btn-outline-white btn-lg">Start
+            free tutorial
+            <i class="fas fa-graduation-cap ml-2"></i>
+          </a>
+
+        </div>
+        <!-- Content -->
+      </section>
+      <!--Section: Jumbotron-->
+
+      <hr class="my-5">
+
+
+
+
+
+
+
+
+      <!--Section: Cards-->
+      <section class="text-center">
+
+        <!--Grid row-->
+        <div class="row mb-4 wow fadeIn">
+
+          <!--Grid column-->
+            {% for each_course in courses %}
+          <div class="col-lg-4 col-md-6 mb-4">
+
+            <!--Card-->
+            <div class="card">
+
+              <!--Card image-->
+              <div class="view overlay">
+                <img src="" style="width: 385px;height: 164px"  class="card-img-top"
+                  alt="">
+                <a href="https://mdbootstrap.com/education/tech-marketing/automated-app-introduction/" target="_blank">
+                  <div class="mask rgba-white-slight"></div>
+                </a>
+              </div>
+
+              <!--Card content-->
+              <div class="card-body">
+                <!--Title-->
+                <h4 class="card-title"><a href="{% url 'course_detail' each_course.id %}">{{ each_course.course_name }}</a></h4>
+                <!--Text-->
+                <p class="card-text">{{ each_course.course_description }}</p>
+
+                   {% if each_course in courses_in_the_current_order %}
+                   <a class="btn btn-pink btn-md" style="font-size: 15px;width: 220px"  role="button" href="{% url 'cart' %}" >الذهاب للسلة</a>
+                        {% elif each_course in student_course %}
+                           <a class="btn btn-purple btn-md" href="{% url 'course_detail' each_course.id%}" >You Own this course</a>
+                    {% else %}
+                  <a href="{% url 'add_to_cart' each_course.id %}" class="btn btn-md btn-light-green" style="font-size: 17px;">{{each_course.price }} اشترك الآن ريال سعودي </a>
+                    {% endif %}
+{#                  <i class="fas fa-play ml-2"></i>#}
+              </div>
+                <div> الدروس | {{ each_course.getAllCourseLessons.count }}</div>
+
+            </div>
+            <!--/.Card-->
+
+          </div>
+            {% endfor %}
+        </div>
+
+
+      </section>
+    </div>
+  </main>
+
+{% endblock %}

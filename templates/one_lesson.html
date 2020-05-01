@@ -1,0 +1,66 @@
+{% extends 'Main.html' %}
+
+    <style>
+        .pp{
+            color: #007bff;
+            font-size: 31px;
+        }
+        p{
+            color: #007bff;
+            font-size: 25px;
+        }
+        a{
+            margin-top: 4px;
+        }
+    </style>
+
+
+{% block content %}
+	<div class="col">
+
+		<div class="col-md">
+			  	<div class="card-header">
+                    <hr/>
+                    <hr/>
+                    <br/>
+                    <div class="card">{{ the_lesson.lesson_name }}</div>
+
+                    <p class="pp">{{ the_course_of_all_these_lessons.course_name }}</p>
+
+{#                    <a class="btn btn-info btn-md" href="{% url 'log_in' %}">Log in Back</a>#}
+			  	</div>
+			</div>
+
+    </div>
+
+    {% if not the_lesson.is_previewed and the_course_of_all_these_lessons not in request.user.student.getStudentCourses %}
+        <p>not entitled to see</p>
+
+        {% elif not the_lesson.is_previewed and request.user.is_anonymous %}
+        <p>Not able</p>
+    {% else %}
+{#    <div class="embed-responsive embed-responsive-16by9">#}
+{#        <video controls width="100" height="40" src="{% static 'MohTech/videos/Screen Recording 2020-04-02 at 4.39.00 AM.mov' %}" ></video>#}
+{#</div>#}
+        <p>Must be a video here</p>
+    {% endif %}
+
+{#    {% for the_courseOF_lessons in the_course_of_all_these_lessons.getAllCourseLessons %}#}
+    {% if check %}
+        <div></div>
+    {% else %}
+        {% if next.lesson_name == the_lesson.lesson_name %}
+            <div class="add-row">
+            <span style="font-size: 28px" aria-hidden="true">&laquo;</span><a class="btn btn-primary" href="{% url 'lesson_detail' pre.lesson_id %}">{{ pre }}</a>
+            </div>
+            {% elif pre.lesson_name == the_lesson.lesson_name %}
+
+                <a class="btn btn-primary" href="{% url 'lesson_detail' next.lesson_id %}">{{ next }} </a><span style="font-size: 28px" aria-hidden="true">&raquo;</span>
+        {% else %}
+                        <span style="font-size: 28px" aria-hidden="true">&laquo;</span><a class="btn btn-primary" href="{% url 'lesson_detail' pre.lesson_id %}">{{ pre }}</a>
+            <a class="btn btn-primary" href="{% url 'lesson_detail' next.lesson_id %}">{{ next }}</a><span style="font-size: 28px" aria-hidden="true">&raquo;</span>
+
+        {% endif %}
+    {% endif %}
+{#    {% endfor %}#}
+{% endblock %}
