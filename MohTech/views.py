@@ -169,6 +169,7 @@ def logOut(request):
 
 
 # here the add-to-cart functionality
+@login_required(login_url='log_in')
 def addToCart(request, pk_):  # we have to know which item/course will be added to the cart
 
     grab_the_course = Courses.objects.get(id=pk_)

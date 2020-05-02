@@ -79,8 +79,10 @@
                         {% elif each_course in student_course %}
                            <a class="btn btn-purple btn-md" href="{% url 'course_detail' each_course.id%}" >You Own this course</a>
                     {% else %}
+
                   <a href="{% url 'add_to_cart' each_course.id %}" class="btn btn-md btn-light-green" style="font-size: 17px;">{{each_course.price }} اشترك الآن ريال سعودي </a>
-                    {% endif %}
+
+                       {% endif %}
 {#                  <i class="fas fa-play ml-2"></i>#}
               </div>
                 <div> الدروس | {{ each_course.getAllCourseLessons.count }}</div>
@@ -90,6 +92,7 @@
 
           </div>
             {% endfor %}
+
         </div>
 
 
