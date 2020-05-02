@@ -198,15 +198,14 @@ def addToCart(request, pk_):  # we have to know which item/course will be added 
     messages.info(request, 'item has been added to OrderedItem and السلة')
     return redirect('home')
 
-
 def currentCart(request):
-    current_user = get_object_or_404(Student, user=request.user)
-    current_active_order = Orders.objects.filter(user=current_user, is_ordered=False)
+    # current_user = get_object_or_404(Student, user=request.user)
+    current_active_order = Orders.objects.filter(user=request.user.student, is_ordered=False)
     if current_active_order.exists():
         return current_active_order[0]
     return 0
 
-
+@login_required(login_url='log_in')
 def viewCart(request):
     the_active_order = currentCart(request)
 
@@ -222,7 +221,7 @@ def viewCart(request):
 
     return render(request, 'cart.html', context)
 
-
+# login required
 def deleteOrderedItem(request, pk_):  # which item being deleted
     the_course_to_delete = CoursesOrdered.objects.get(course_ordered_id=pk_, is_ordered=False)
 
