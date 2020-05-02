@@ -275,3 +275,6 @@ def checkOutPayTransaction(request, pk_):  # we have to know which order with wh
 
     messages.info(request, 'thanks for buying theses courses ')
     return redirect('home')
+
+
+# test test
