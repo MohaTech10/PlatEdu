@@ -12,5 +12,7 @@ urlpatterns = [
     path('my-cart/', viewCart, name='cart'),
     path('delete/<str:pk_>', deleteOrderedItem, name='delete'),
     path('my_courses/', getCurrentUSerCourse, name='user_course'),
+    path('check_out/<str:pk_>', checkOutPayTransaction, name='check_out')
+
 
 ]

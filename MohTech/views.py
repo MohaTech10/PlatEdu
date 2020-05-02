@@ -19,7 +19,7 @@ def returnHomePage(request):
     if request.user.is_authenticated:
 
         all_courses = Courses.objects.all()
-        the_student_courses = request.user.student.getStudentCourses
+        the_student_courses = request.user.student.getStudentCourses()
 
         current_active_order_instance = Orders.objects.filter(
             user=request.user.student,
@@ -70,7 +70,7 @@ def getLesson(request, pk_):
     specific_lesson = Lessons.objects.get(lesson_id=pk_)
     the_course_of_the_lessons = Courses.objects.get(sections__lessons__lesson_id=pk_)
     # user_courses = request.user.student.getStudentCourses()
-
+    # user_courses = request.user.student.courses_enrolled.all()
     p = []
     for ii in the_course_of_the_lessons.getAllCourseLessons():
         p.append(ii)
@@ -174,7 +174,7 @@ def addToCart(request, pk_):  # we have to know which item/course will be added 
     grab_the_course = Courses.objects.get(id=pk_)
     grab_the_purchaser = request.user.student
 
-    if grab_the_course in grab_the_purchaser.getStudentCourses:
+    if grab_the_course in grab_the_purchaser.getStudentCourses():
         messages.info(request, 'you own this product')
         return redirect('home')
 
@@ -208,6 +208,7 @@ def currentCart(request):
 @login_required(login_url='log_in')
 def viewCart(request):
     the_active_order = currentCart(request)
+    print(the_active_order.id)
 
     if the_active_order.ordered_courses.all():
         print('True')
@@ -239,3 +240,37 @@ def getCurrentUSerCourse(request):
     }
     return render(request, 'user_courses.html', context)
 
+def checkOutPayTransaction(request, pk_):  # we have to know which order with which courses will be purchased
+
+    # فيه بعض الخطوات الي لازم نكون متطلعين عليها قبل مايتم شراء الطلب راح نذكرها
+
+    # get the current order being purchased, تقدر ايضا تجيبه عن طريق is_ordered = False ! عادي
+    # كلو يمشي
+    order_to_purchase = Orders.objects.get(id=pk_)
+
+    # and then we have to update the order to be is_ordered = True, cuz to let them finish
+    # the opened still one and if its true close it and let them open another one
+    # their order and have the ability to order again
+    # updating the order to be shipped
+    order_to_purchase.is_ordered = True
+    order_to_purchase.save()
+
+    # get all the current_order items, and update them,
+    # current_active_order.ordered_items.all() هذي هيا بالزبط بس انا سويت دااله كل انستانس اوردر يقدر يوصلها
+    all_order_courses = order_to_purchase.allOrderItems()
+    all_order_courses.update(is_ordered=True)
+
+    # convert the items into their general way which is Products to be sent the user courses so this fields just accept the original Object type course
+    # not OrderedCourses
+    current_product_in_the_about_to_close_true_order = [each_course.course for each_course in all_order_courses]
+
+    # grab the current user
+    current_user = request.user.student
+    # this is used when we wanna send lists of objects to the user
+    # if many to many and you wanna send one instance such as Java only then ..add(instance)
+    # but because many to many and wanna send lists of objects we use this * to send them
+    current_user.courses_enrolled.add(*current_product_in_the_about_to_close_true_order)
+    current_user.save()
+
+    messages.info(request, 'thanks for buying theses courses ')
+    return redirect('home')

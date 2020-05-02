@@ -62,7 +62,6 @@ class Student(models.Model):
     #     pass
     # def getStudentsComments(self):
     #     pass
-    @property
     def getStudentCourses(self):
         return self.courses_enrolled.all()
     def getStudentProjects(self):
@@ -151,4 +150,9 @@ class Review(models.Model):
     ratings = models.FloatField()
     def __str__(self):
         return str(self.ratings)
-# #
+
+''' 
+
+    each student could comments if the course in their bag that's it so the comments  are shown for those who bought the courses 
+    
+'''
