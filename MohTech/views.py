@@ -169,7 +169,7 @@ def getLesson(request, pk_):
 
 
 # here the add-to-cart functionality
-# @login_required(login_url='log_in')
+@login_required(login_url='account_login')
 def addToCart(request, pk_):  # we have to know which item/course will be added to the cart
 
     grab_the_course = Courses.objects.get(id=pk_)
@@ -206,7 +206,7 @@ def currentCart(request):
         return current_active_order[0]
     return 0
 
-# @login_required(login_url='log_in')
+@login_required(login_url='account_login')
 def viewCart(request):
     the_active_order = currentCart(request)
     print(the_active_order.id)
@@ -223,7 +223,7 @@ def viewCart(request):
 
     return render(request, 'cart.html', context)
 
-# login required
+@login_required(login_url='account_login')
 def deleteOrderedItem(request, pk_):  # which item being deleted
     the_course_to_delete = CoursesOrdered.objects.get(course_ordered_id=pk_, is_ordered=False)
 
@@ -241,6 +241,7 @@ def getCurrentUSerCourse(request):
     }
     return render(request, 'user_courses.html', context)
 
+@login_required(login_url='account_login')
 def checkOutPayTransaction(request, pk_):  # we have to know which order with which courses will be purchased
 
     # فيه بعض الخطوات الي لازم نكون متطلعين عليها قبل مايتم شراء الطلب راح نذكرها
