@@ -10,7 +10,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.admin import User, Group
 from .forms import *
 from .decorators import mustLoggedOut
-
+import allauth.account.views
 
 def returnHomePage(request):
     # الفكرةحقت اوثينتيكايتد عظيمه جدا بحيث تسوي ريندر للدداتا بشكلين شكل اذا كانو مسجل وشكل اذا كان اننونمس
@@ -115,61 +115,61 @@ def getLesson(request, pk_):
     return render(request, 'one_lesson.html', context)
 
 
-@mustLoggedOut
-def signUp(request):
-    the_form = SignUpForm()
-    # this means after clicking on the submit button what would you like to happen
-    if request.method == 'POST':
-        the_form = SignUpForm(request.POST)
-        if the_form.is_valid():
-            the_user = the_form.save()
-            # after posting we will create a simple signals
-            # picking_up_the_group
-            student_group = Group.objects.get(name='student')
-            the_user.groups.add(student_group)
-            Student.objects.create(
-                user=the_user,
-                last_name=the_user.last_name,
-                email=the_user.email,
-            ).save()
-            username = the_form.cleaned_data.get('username')
-            messages.success(request, 'has been created successfully ' + username)
-            return redirect('log_in')
-    context = {
-        'form': the_form
-    }
-    return render(request, 'SignUp.html', context)
+# @mustLoggedOut
+# # def signUp(request):
+# #     the_form = SignUpForm()
+# #     # this means after clicking on the submit button what would you like to happen
+# #     if request.method == 'POST':
+# #         the_form = SignUpForm(request.POST)
+# #         if the_form.is_valid():
+# #             the_user = the_form.save()
+# #             # after posting we will create a simple signals
+# #             # picking_up_the_group
+# #             student_group = Group.objects.get(name='student')
+# #             the_user.groups.add(student_group)
+# #             Student.objects.create(
+# #                 user=the_user,
+# #                 last_name=the_user.last_name,
+# #                 email=the_user.email,
+# #             ).save()
+# #             username = the_form.cleaned_data.get('username')
+# #             messages.success(request, 'has been created successfully ' + username)
+# #             return redirect('log_in')
+# #     context = {
+# #         'form': the_form
+# #     }
+# #     return render(request, 'SignUp.html', context)
 
 
-@mustLoggedOut
-def logIn(request):
-    # grabbing the user name and pass
-    username = request.POST.get('username')
-    password = request.POST.get('password')
-    # if the button clicks on hitting submit :
-    if request.method == "POST":
-        # it is either returns the user object with accepted request as long as they're logged in or None
-        the_user_with_their_request = authenticate(request, username=username, password=password)
-        if the_user_with_their_request is not None:
-            login(request, the_user_with_their_request)
-            if 'next' in request.POST:
-                return redirect(request.POST.get('next'))
-            else:
-                return redirect('home')
-        else:
-            messages.error(request, 'username or password is incorrect.. ')
+# @mustLoggedOut
+# def logIn(request):
+#     # grabbing the user name and pass
+#     username = request.POST.get('username')
+#     password = request.POST.get('password')
+#     # if the button clicks on hitting submit :
+#     if request.method == "POST":
+#         # it is either returns the user object with accepted request as long as they're logged in or None
+#         the_user_with_their_request = authenticate(request, username=username, password=password)
+#         if the_user_with_their_request is not None:
+#             login(request, the_user_with_their_request)
+#             if 'next' in request.POST:
+#                 return redirect(request.POST.get('next'))
+#             else:
+#                 return redirect('home')
+#         else:
+#             messages.error(request, 'username or password is incorrect.. ')
+#
+#     return render(request, 'log_in.html')
 
-    return render(request, 'log_in.html')
 
-
-def logOut(request):
-    logout(request)
-
-    return redirect('home')
+# def logOut(request):
+#     logout(request)
+#
+#     return redirect('home')
 
 
 # here the add-to-cart functionality
-@login_required(login_url='log_in')
+# @login_required(login_url='log_in')
 def addToCart(request, pk_):  # we have to know which item/course will be added to the cart
 
     grab_the_course = Courses.objects.get(id=pk_)
@@ -206,7 +206,7 @@ def currentCart(request):
         return current_active_order[0]
     return 0
 
-@login_required(login_url='log_in')
+# @login_required(login_url='log_in')
 def viewCart(request):
     the_active_order = currentCart(request)
     print(the_active_order.id)
@@ -232,7 +232,7 @@ def deleteOrderedItem(request, pk_):  # which item being deleted
     return redirect('cart')
 
 
-@login_required(login_url='log_in')
+# @login_required(login_url='log_in')
 def getCurrentUSerCourse(request):
     get_current_user = request.user.student.getStudentCourses()
     # my courses means that a course owns by the user in M2M
@@ -276,5 +276,3 @@ def checkOutPayTransaction(request, pk_):  # we have to know which order with wh
     messages.info(request, 'thanks for buying theses courses ')
     return redirect('home')
 
-
-# test test

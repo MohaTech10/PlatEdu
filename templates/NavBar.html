@@ -73,14 +73,14 @@
         <a class="nav-link mt-1" href="#">@{{ request.user.username }}<span class="sr-only">(current)</span></a>
       </li>
         <li class="nav-item ">
-        <a class="nav-link btn btn-danger btn-md " id="logout"  >Logout<span class="sr-only">(current)</span></a>
+{#        <a class="nav-link btn btn-danger btn-md " id="logout"  >Logout<span class="sr-only">(current)</span></a>#}
       </li>
             {% else %}
         <li class="nav-item ">
-        <a class="btn btn-primary btn-md " id="login"  href="{% url 'log_in' %}">Login<span class="sr-only">(current)</span></a>
+{#        <a class="btn btn-primary btn-md " id="login"  href="{% url 'log_in' %}">Login<span class="sr-only">(current)</span></a>#}
       </li>
         <li class="nav-item ">
-        <a class="btn btn-primary btn-md " id="sign up " href="{% url 'sign_up' %}" >sign up<span class="sr-only">(current)</span></a>
+{#        <a class="btn btn-primary btn-md " id="sign up " href="{% url 'sign_up' %}" >sign up<span class="sr-only">(current)</span></a>#}
       </li>
         {% endif %}
     </ul>
@@ -118,7 +118,7 @@
     log_out_bt.addEventListener('click', (ev => {
         let conf = confirm('Are you sure you want to log out ?..');
         if (conf){
-            log_out_bt.setAttribute('href', '{% url 'log_out' %}');
+            {#log_out_bt.setAttribute('href', '{% url 'log_out' %}');#}
         }
 
     }))
