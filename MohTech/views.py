@@ -384,7 +384,6 @@ def lessonCompleted(request):
 # return redirect('lesson_detail', _lesson_id)
 
 
-# من اليوم وطالع التفكير كله عل باك اند تطوير لاتضيع يومك اكثر على اشياء مالها داعي اوكي ؟
 @login_required(login_url='account_login')
 def userCourses(request):
 
