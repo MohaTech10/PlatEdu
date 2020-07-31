@@ -1,28 +1,28 @@
 from django.db import models
-
 from django.db import models
-
 from django.db import models
 from django.contrib.auth.admin import User
 import uuid
+# from django.http.request import HttpRequest
+from threadlocals.threadlocals import get_current_user
 from django.utils.text import slugify
 # الهرجه طلعت كلها اب لديه ابناء، ذولا الابنا عندهم ابناء وهكذا ويمديك من الاحفاد توصل للجد والاب وهكدا
 #
 # class Student(models.Model):
 #     pass
 
+user = get_current_user()
+
 
 class Courses(models.Model):
-    course_name = models.CharField(max_length=100)
+    course_name_english = models.CharField(max_length=200, null=True, blank=True)
+    course_name = models.CharField(max_length=200)
     price = models.FloatField(null=True, blank=True)
     course_description = models.TextField()
+    course_pic = models.ImageField(null=True, blank=True)
     slug = models.SlugField(blank=True, null=True)
 
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.course_name)
-        super(Courses, self).save(*args, **kwargs)
-
+    # def
     # a lot of properties but not now, the goal now is to get comfortable with queries
 
     def __str__(self):
@@ -47,7 +47,11 @@ class Courses(models.Model):
     def getCourseProject(self):
         return self.projects_set.all()
         # return Projects.objects.filter(course=self)
+    def theCourseCompleted(self):
+        the_course_status = CertificateCompleted.objects.filter(course=self)
+        return the_course_status
 
+        # return the_course_status.lesson_watched.filter(certificatecompleted__student=user, certificatecompleted__course=self)
 class Student(models.Model):
     # extending the user fields instead of having just a few fields with no relations such as i am about to put for the students
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -95,6 +99,7 @@ class Lessons(models.Model):
     # a section contains a lot of lesson and so on
     date_created = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     lesson_id = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    lesson_video = models.FileField(null=True, blank=True)
     section = models.ForeignKey(Sections, on_delete=models.CASCADE)
     lesson_name = models.CharField(max_length=100)
     is_previewed = models.BooleanField(default=False, null=True, blank=True)
@@ -107,6 +112,8 @@ class Lessons(models.Model):
         # فيه طريقه اخرى تمشي مع الكل الا وهيا using filter
         # print(self.comments_set.all())
         return Comments.objects.filter(lesson=self)
+    class Meta:
+        ordering = ['date_created']
 
 
 
@@ -119,13 +126,14 @@ class Comments(models.Model):
 
 class CoursesOrdered(models.Model):
     # here just converting an ordinary course to become ordered one once a user clicks on add to cart cuz it's no longer just a course
+    user = models.ForeignKey(Student, on_delete=models.CASCADE, null=True, blank=True)
     course_ordered_id = models.UUIDField(primary_key=True, default=uuid.uuid4)
-    course = models.OneToOneField(Courses, on_delete=models.CASCADE)
+    course = models.ForeignKey(Courses, on_delete=models.CASCADE)
     is_ordered = models.BooleanField(default=False)
 
     def __str__(self):
         return self.course.course_name
-
+# السلة
 class Orders(models.Model):
     user = models.ForeignKey(Student, on_delete=models.CASCADE)
     ordered_courses = models.ManyToManyField(CoursesOrdered)
@@ -156,3 +164,21 @@ class Review(models.Model):
     each student could comments if the course in their bag that's it so the comments  are shown for those who bought the courses 
     
 '''
+
+# exactly same with likes and unlike way which is a user and a lesson and has been watched or not that's it
+class CertificateCompleted(models.Model):
+    course = models.ForeignKey(Courses, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    lesson_watched = models.ManyToManyField(Lessons)
+    # class Meta:
+    #     unique_together = ('course', 'student')
+
+    def __str__(self):
+        return self.student.first_name + '\'s certificate'
+    def getLessonWatched(self):
+        return self.lesson_watched.all().last()
+
+    def getCourseBoughtProgress(self):
+        return int((self.lesson_watched.count() / self.course.getAllCourseLessons().count()) * 100)
+    # student_progress = int((to_watch_or_not.lesson_watched.count() / the_course.getAllCourseLessons().count()) * 100)
+

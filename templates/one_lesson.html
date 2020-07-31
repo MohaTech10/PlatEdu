@@ -33,7 +33,6 @@
 			</div>
 
     </div>
-
     {% if not the_lesson.is_previewed and the_course_of_all_these_lessons not in request.user.student.getStudentCourses %}
         <p>not entitled to see</p>
 
@@ -43,7 +42,21 @@
 {#    <div class="embed-responsive embed-responsive-16by9">#}
 {#        <video controls width="100" height="40" src="{% static 'MohTech/videos/Screen Recording 2020-04-02 at 4.39.00 AM.mov' %}" ></video>#}
 {#</div>#}
-        <p>Must be a video here</p>
+
+
+
+        {% if the_lesson in lessons_watched %}
+            <p>completed</p>
+            {% endif %}
+
+
+            <div id="watch-section">
+        {% include 'watch_or_not.html' %}
+        </div>
+{#        <div class="embed-responsive embed-responsive-16by9">#}
+{#  <video autoplay  class="embed-responsive-item" src="{{the_lesson.lesson_video.url}}" controls  ></video>#}
+{#</div>#}
+{#        <video controls autoplay src="{{ the_lesson.lesson_video.url }}" width="300" height="100"></video>#}
     {% endif %}
 
 {#    {% for the_courseOF_lessons in the_course_of_all_these_lessons.getAllCourseLessons %}#}
@@ -66,6 +79,10 @@
 
 
     {% if the_course_of_all_these_lessons in request.user.student.getStudentCourses %}
+{#        <p class="form-group"> you have completed {{ course_progress }}% </p>#}
+{#        <div id="watch-section">#}
+{#        {% include 'watch_or_not.html' %}#}
+{#        </div>#}
                     <!--Comments-->
             <div class="card card-comments mb-3 wow fadeIn">
               <div class="card-header font-weight-bold">3 comments</div>
@@ -148,6 +165,8 @@
         <p>النقاشات للطلاب المشتركين</p>
     {% endif %}
 
+
+{{ lesson_dur }}
 
 {#    {% endfor %}#}
 {% endblock %}

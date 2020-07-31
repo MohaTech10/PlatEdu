@@ -1,5 +1,5 @@
 {% extends 'Main.html' %}
-{% load static %}
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -20,12 +20,12 @@
                 <a href="{% url 'home' %}" class="btn btn-outline-info btn-sm pull-right" >Continue shopping</a>
                 <div class="clearfix"></div>
             </div>
-            <div class="card-body">
+            <div class="card-body"  >
                     <!-- PRODUCT -->
                 {% for each_course in the_order.allOrderItems %}
                     <div class="row">
                         <div class="col-12 col-sm-12 col-md-2 text-center">
-                                <img class="img-responsive" src="{% static 'MohTech/img/posts.png' %}" style="width: 70px;height: 40px" alt="prewiew"  >
+                                <img class="img-responsive" src="" style="width: 70px;height: 40px" alt="prewiew" />
                         </div>
                         <div class="col-12 text-sm-center col-sm-12 text-md-left col-md-6">
                             <h4 class="product-name"><strong style="color: black">{{ each_course }}</strong></h4>
@@ -45,9 +45,12 @@
 {#                                    <input type="button" value="-" class="minus">#}
 {#                                </div>#}
                             </div>
-                            <div class="col-2 col-sm-2 col-md-2  text-right">
+                            <div class="col-2 col-sm-2 col-md-2 text-right" >
+
                                 <a class="btn btn-outline-danger btn-xs" href="{% url 'delete' each_course.course_ordered_id %}">
+
                                     <i id='trash' class="fa fa-trash" style="color: #000" aria-hidden="true"></i>
+
                                 </a>
                             </div>
                         </div>

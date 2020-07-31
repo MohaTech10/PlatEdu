@@ -1,16 +1,11 @@
-from django.shortcuts import render
-from django.shortcuts import render
 from django.contrib import messages
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import *
-from django.views.generic import ListView, DetailView
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.admin import User, Group
-from .forms import *
-from .decorators import mustLoggedOut
-import allauth.account.views
+from django.http import JsonResponse
+from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
+from moviepy.editor import VideoFileClip
+from .models import *
+# from django.templatetags.static import static(
 
 def returnHomePage(request):
     # الفكرةحقت اوثينتيكايتد عظيمه جدا بحيث تسوي ريندر للدداتا بشكلين شكل اذا كانو مسجل وشكل اذا كان اننونمس
@@ -51,11 +46,20 @@ def returnHomePage(request):
 #     # paginate_by = 1
 #     ordering = ['-course_name']
 
-def courseDetail(request, pk_):
-    specific_object_has_been_chosen = Courses.objects.get(id=pk_)
+def courseDetail(request, slug):
+    specific_object_has_been_chosen = Courses.objects.get(slug=slug)
     # print(request.user.student.getStudentCourses)
     # print("look here: ", request.user.student.getStudentCourses())
     # pre_course = Prerequisites.objects.all().values('must_taken')
+    # the_complete = CertificateCompleted.objects.get(
+    #     # هذا الكلام طبعا حيتغير لاحقا
+    #     course=specific_object_has_been_chosen,
+    #     student=request.user.student,
+    # )
+    # print(int((the_complete.lesson_watched.count()/specific_object_has_been_chosen.getAllCourseLessons().count()) * 100))
+
+    # يتم اضافة فقط وفقط الدروس المتعلقه بالكورس المعين كيف ؟ ببساطه تحصل على الكورس الي داخله اليوزر ثم
+    # تسوي ادد على الدروس وهكذا
 
     context = {
         'one_course': specific_object_has_been_chosen,
@@ -67,10 +71,27 @@ def courseDetail(request, pk_):
 # always use Functions Based Views, it is much better
 # @login_required(login_url='log_in')
 def getLesson(request, pk_):
+    # front-end shape of the button of each lesson
     specific_lesson = Lessons.objects.get(lesson_id=pk_)
     the_course_of_the_lessons = Courses.objects.get(sections__lessons__lesson_id=pk_)
+    # url = static(specific_lesson.lesson_video.url)
+    # the_lesson_instance = VideoFileClip(url)
+    # lesson_dur = the_lesson_instance.duration
     # user_courses = request.user.student.getStudentCourses()
     # user_courses = request.user.student.courses_enrolled.all()
+    is_watched = True
+    student_progress = 0
+    lessons_watched = None
+    if request.user.is_authenticated:
+        if the_course_of_the_lessons in request.user.student.getStudentCourses():
+            course_certificate = CertificateCompleted.objects.get(
+                course=the_course_of_the_lessons,
+                student=request.user.student
+            )
+            lessons_watched = course_certificate.lesson_watched.filter(certificatecompleted__course=the_course_of_the_lessons, certificatecompleted__student=request.user.student)
+            if course_certificate.lesson_watched.filter(lesson_id=pk_, certificatecompleted__student=request.user.student).exists():
+                is_watched = True
+            student_progress = int((course_certificate.lesson_watched.count()/the_course_of_the_lessons.getAllCourseLessons().count()) * 100)
     p = []
     for ii in the_course_of_the_lessons.getAllCourseLessons():
         p.append(ii)
@@ -110,7 +131,11 @@ def getLesson(request, pk_):
         'next': next_lesson,
         'pre': pre_lesson,
         'check': check_variable,
-        # 'user_courses': user_courses
+        # 'user_courses': user_courses,
+        'is_watched': is_watched,
+        'course_progress': student_progress,
+        'lessons_watched': lessons_watched,
+        # 'lesson_dur': lesson_dur
     }
     return render(request, 'one_lesson.html', context)
 
@@ -170,10 +195,11 @@ def getLesson(request, pk_):
 
 # here the add-to-cart functionality
 @login_required(login_url='account_login')
-def addToCart(request, pk_):  # we have to know which item/course will be added to the cart
-
-    grab_the_course = Courses.objects.get(id=pk_)
+def addToCart(request, slug):  # we have to know which item/course will be added to the cart
+    # using ajax jquery tomorrow
+    grab_the_course = Courses.objects.get(slug=slug)
     grab_the_purchaser = request.user.student
+    
 
     if grab_the_course in grab_the_purchaser.getStudentCourses():
         messages.info(request, 'you own this product')
@@ -184,6 +210,9 @@ def addToCart(request, pk_):  # we have to know which item/course will be added 
     # as new row  after checking it is not in the user cart
     becomes_ordered, created = CoursesOrdered.objects.get_or_create(
         course=grab_the_course,
+        user=grab_the_purchaser,
+        is_ordered=False
+
     )
     # here it means to create an order which will be the order opens for first
     # time and not closed until transaction process
@@ -196,8 +225,27 @@ def addToCart(request, pk_):  # we have to know which item/course will be added 
     first_time_open_active_order.ordered_courses.add(becomes_ordered)
     first_time_open_active_order.save()
 
+    # the_current_order_active_courses_in_it = []
+    # getting_the_order_courses = first_time_open_active_order.ordered_courses.all()
+    # the_current_order_active_courses_in_it = [ordered_item.course for ordered_item in getting_the_order_courses]
+    # 
     messages.info(request, 'item has been added to OrderedItem and السلة')
     return redirect('home')
+    # student_course = request.user.student.getStudentCourses()
+    # context = {
+    #     'each_course': grab_the_course
+    #
+    # }
+    # if request.is_ajax():
+    #
+    #     html = render_to_string('add_cart.html', context, request=request)
+    #     return JsonResponse({'form': html})
+    # return render(request, 'add_cart.html', context)
+
+
+
+
+
 
 def currentCart(request):
     # current_user = get_object_or_404(Student, user=request.user)
@@ -205,6 +253,7 @@ def currentCart(request):
     if current_active_order.exists():
         return current_active_order[0]
     return 0
+
 
 @login_required(login_url='account_login')
 def viewCart(request):
@@ -223,23 +272,33 @@ def viewCart(request):
 
     return render(request, 'cart.html', context)
 
+
 @login_required(login_url='account_login')
 def deleteOrderedItem(request, pk_):  # which item being deleted
-    the_course_to_delete = CoursesOrdered.objects.get(course_ordered_id=pk_, is_ordered=False)
+    the_course_to_delete = CoursesOrdered.objects.get(course_ordered_id=pk_, is_ordered=False,
+                                                      user=request.user.student)
 
     the_course_to_delete.delete()
     messages.info(request, 'has been removed')
+    # context = {
+    #     'each_course': the_course_to_delete,
+    #     'the_order': order.ordered_courses
+    # }
+    # if request.is_ajax():
+    #     html = render_to_string('delete_one.html', context, request=request)
+    #     return JsonResponse({'form': html})
     return redirect('cart')
 
 
 # @login_required(login_url='log_in')
-def getCurrentUSerCourse(request):
-    get_current_user = request.user.student.getStudentCourses()
-    # my courses means that a course owns by the user in M2M
-    context = {
-        'current_user_courses': get_current_user
-    }
-    return render(request, 'user_courses.html', context)
+# def getCurrentUSerCourse(request):
+#     get_current_user = request.user.student.getStudentCourses()
+#     # my courses means that a course owns by the user in M2M
+#     context = {
+#         'current_user_courses': get_current_user
+#     }
+#     return render(request, 'user_courses.html', context)
+
 
 @login_required(login_url='account_login')
 def checkOutPayTransaction(request, pk_):  # we have to know which order with which courses will be purchased
@@ -260,7 +319,7 @@ def checkOutPayTransaction(request, pk_):  # we have to know which order with wh
     # get all the current_order items, and update them,
     # current_active_order.ordered_items.all() هذي هيا بالزبط بس انا سويت دااله كل انستانس اوردر يقدر يوصلها
     all_order_courses = order_to_purchase.allOrderItems()
-    all_order_courses.update(is_ordered=True)
+    all_order_courses.update(user=request.user.student, is_ordered=True)
 
     # convert the items into their general way which is Products to be sent the user courses so this fields just accept the original Object type course
     # not OrderedCourses
@@ -274,6 +333,60 @@ def checkOutPayTransaction(request, pk_):  # we have to know which order with wh
     current_user.courses_enrolled.add(*current_product_in_the_about_to_close_true_order)
     current_user.save()
 
+    # now after succeed in buy i would like to open instances of the certificate kinda thing
+    for course_ in current_product_in_the_about_to_close_true_order:
+        open_c, created = CertificateCompleted.objects.get_or_create(
+            course=course_,
+            student=current_user
+        )
+        print('correct')
+
     messages.info(request, 'thanks for buying theses courses ')
     return redirect('home')
 
+
+# is watched => True, or False two parts front-end and back-end they have to be consistent so that if front end says red then backend
+# click means remove and so on
+
+def lessonCompleted(request):
+    _lesson_id = request.POST.get('id')
+    the_fucking_lesson = Lessons.objects.get(lesson_id=_lesson_id)
+    the_course = Courses.objects.get(sections__lessons__lesson_id=_lesson_id)
+    # if the_course in request.user.student.getStudentCourses():
+    to_watch_or_not = CertificateCompleted.objects.get(
+        course=the_course,
+        student=request.user.student,
+    )
+    # lessons_watched = to_watch_or_not.lesson_watched.filter(certificatecompleted__course=the_course, certificatecompleted__student=request.user.student)
+
+    # is_watched = False
+    # if to_watch_or_not.lesson_watched.filter(lesson_id=_lesson_id, certificatecompleted__student=request.user.student).exists():
+    #     to_watch_or_not.lesson_watched.remove(the_fucking_lesson)
+    #     is_watched = False
+    # else:
+    to_watch_or_not.lesson_watched.add(the_fucking_lesson)
+    is_watched = True
+    student_progress = int((to_watch_or_not.lesson_watched.count() / the_course.getAllCourseLessons().count()) * 100)
+    context = {
+        'the_lesson': the_fucking_lesson,
+        'is_watched': is_watched,
+        'course_progress': student_progress,
+        'the_course_of_all_these_lessons': the_course,
+        # 'lessons_watched': lessons_watched
+    }
+
+
+    if request.is_ajax():
+        html = render_to_string('watch_or_not.html', context, request=request)
+        return JsonResponse({'form': html})
+# else:
+#
+# return redirect('lesson_detail', _lesson_id)
+
+
+# من اليوم وطالع التفكير كله عل باك اند تطوير لاتضيع يومك اكثر على اشياء مالها داعي اوكي ؟
+@login_required(login_url='account_login')
+def userCourses(request):
+
+
+    return render(request, 'user_courses.html')

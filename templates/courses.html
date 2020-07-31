@@ -60,29 +60,30 @@
 
               <!--Card image-->
               <div class="view overlay">
-                <img src="" style="width: 385px;height: 164px"  class="card-img-top"
+                <img src="{{ each_course.course_pic.url }}"  style="width: 385px;height: 164px"  class="card-img-top"
                   alt="">
-                <a href="https://mdbootstrap.com/education/tech-marketing/automated-app-introduction/" target="_blank">
                   <div class="mask rgba-white-slight"></div>
-                </a>
               </div>
 
               <!--Card content-->
               <div class="card-body">
                 <!--Title-->
-                <h4 class="card-title"><a href="{% url 'course_detail' each_course.id %}">{{ each_course.course_name }}</a></h4>
+                <h4 class="card-title"><a href="{% url 'course_detail' each_course.slug %}">{{ each_course.course_name }}</a></h4>
                 <!--Text-->
                 <p class="card-text">{{ each_course.course_description }}</p>
+{#                  {% include 'add_cart.html' %}#}
 
+              <div id="buy_sec">
                    {% if each_course in courses_in_the_current_order %}
                    <a class="btn btn-pink btn-md" style="font-size: 15px;width: 220px"  role="button" href="{% url 'cart' %}" >الذهاب للسلة</a>
-                        {% elif each_course in student_course %}
-                           <a class="btn btn-purple btn-md" href="{% url 'course_detail' each_course.id%}" >You Own this course</a>
+                        {% elif each_course in request.user.student.getStudentCourses %}
+                           <a class="btn btn-purple btn-md" href="{% url 'course_detail' each_course.slug%}" >You Own this course</a>
                     {% else %}
 
-                  <a href="{% url 'add_to_cart' each_course.id %}" class="btn btn-md btn-light-green" style="font-size: 17px;">{{each_course.price }} اشترك الآن ريال سعودي </a>
+                     <a href="{% url 'add_to_cart' each_course.slug %}" class="btn btn-md btn-light-green" style="font-size: 17px;">{{each_course.price }} اشترك الآن ريال سعودي </a>
 
                        {% endif %}
+              </div>
 {#                  <i class="fas fa-play ml-2"></i>#}
               </div>
                 <div> الدروس | {{ each_course.getAllCourseLessons.count }}</div>
@@ -99,5 +100,7 @@
       </section>
     </div>
   </main>
+<script>
 
+</script>
 {% endblock %}

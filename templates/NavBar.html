@@ -73,14 +73,14 @@
         <a class="nav-link mt-1" href="#">@{{ request.user.username }}<span class="sr-only">(current)</span></a>
       </li>
         <li class="nav-item ">
-{#        <a class="nav-link btn btn-danger btn-md " id="logout"  >Logout<span class="sr-only">(current)</span></a>#}
+        <a class="nav-link btn btn-danger btn-md " id="logout"  >Logout<span class="sr-only">(current)</span></a>
       </li>
             {% else %}
         <li class="nav-item ">
-{#        <a class="btn btn-primary btn-md " id="login"  href="{% url 'log_in' %}">Login<span class="sr-only">(current)</span></a>#}
+        <a class="btn btn-primary btn-md " id="login"  href="{% url 'account_login' %}">Login<span class="sr-only">(current)</span></a>
       </li>
         <li class="nav-item ">
-{#        <a class="btn btn-primary btn-md " id="sign up " href="{% url 'sign_up' %}" >sign up<span class="sr-only">(current)</span></a>#}
+        <a class="btn btn-primary btn-md " id="sign up " href="{% url 'account_signup' %}" >sign up<span class="sr-only">(current)</span></a>
       </li>
         {% endif %}
     </ul>
@@ -96,16 +96,25 @@
 
 
 
+        {% if request.user.is_authenticated %}
       <li class="nav-item ">
         <a class="nav-link" href="#">مشاريعي <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">دوراتي</a>
+        <a class="nav-link" href="{% url 'user_course' %}">دوراتي</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">صفحتي الشخصية</a>
       </li>
-      <li class="nav-item active">
+    {% endif %}
+
+     <li class="nav-item ">
+        <a class="nav-link" href="{% url 'home' %}">من نحن </a>
+      </li>
+     <li class="nav-item ">
+        <a class="nav-link" href="{% url 'home' %}">الاسئلة الشائعة</a>
+      </li>
+          <li class="nav-item active">
         <a class="nav-link" href="{% url 'home' %}">الصفحة الرئيسية</a>
       </li>
     </ul>
@@ -118,7 +127,7 @@
     log_out_bt.addEventListener('click', (ev => {
         let conf = confirm('Are you sure you want to log out ?..');
         if (conf){
-            {#log_out_bt.setAttribute('href', '{% url 'log_out' %}');#}
+            log_out_bt.setAttribute('href', '{% url 'account_logout' %}');
         }
 
     }))

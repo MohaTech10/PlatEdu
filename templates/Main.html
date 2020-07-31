@@ -4,6 +4,7 @@
 
 <head>
   <meta charset="utf-8">
+    <link rel="stylesheet" href="{% static 'MohTech/css/progress_bar.css' %}" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <title>Material Design Bootstrap</title>
@@ -15,6 +16,7 @@
   <link href="{% static 'MohTech/css/mdb.min.css' %}" rel="stylesheet">
   <!-- Your custom styles (optional) -->
   <link href="{% static 'MohTech/css/style.min.css' %}" rel="stylesheet">
+
 </head>
 
 <body>
@@ -37,15 +39,58 @@
   <!-- MDB core JavaScript -->
   <script type="text/javascript" src="{% static 'MohTech/js/mdb.min.js' %}"></script>
   <!-- Initializations -->
+<script src="https://code.jquery.com/jquery-3.5.0.js" integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc=" crossorigin="anonymous"></script>
+
   <script type="text/javascript">
     // Animations initialization
     new WOW().init();
+    $(document).ready(function () {
+        $('#vid').on('ended', function (e) {
+            {#e.preventDefault();#}
+            let the_lesson_id = $('#watch_').attr('value');
+            $.ajax({
+                type: 'POST',
+                url: {% url 'watch' %},
+                data: {'id': the_lesson_id, 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                dataType: 'json',
+                success: (response) => {
+
+                    $('#watch-section').html(response['form']);
+
+                    {#console.log($('#s').html(response['form']));#}
+
+                },
+                error: (res, err) => {
+                    console.log(err)
+                }
+
+            });
+            console.log('you have watched ');
+            $(this).off('ended')
+
+        })
+    });
 
 
 
 
+    /*
+      $(document).ready(function () {
+          $('#vid').on('ended', function (e) {
 
+              console.log('Hello')
+
+              $(this).off('ended')
+
+          })
+      })
+
+     */
+    {#$('#vid').on('ended', function (e) {#}
+       {#alert($(this).duration());#}
   </script>
+
+
 
 </body>
 

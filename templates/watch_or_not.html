@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+
+        <form action="{% url 'watch' %}" method="post">
+
+        {% csrf_token %}
+
+            {% if the_course_of_all_these_lessons in request.user.student.getStudentCourses %}
+                                    <p class="form-group"> you have completed {{ course_progress }}% </p>
+
+
+            {% endif %}
+
+
+
+{##}
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <button hidden id="watch_" name="lesson_id" value="{{ the_lesson.lesson_id }}"></button>
+  <video autoplay id="vid" class="embed-responsive-item" src="{{the_lesson.lesson_video.url}}" controls  ></video>
+</div>
+{#        {% if is_watched %}#}
+{#                        <p class="form-group"> you have completed {{ course_progress }}% </p>#}
+{##}
+{#            <form></form>#}
+{#                    <video  controls autoplay name="lesson_id" value="{{ the_lesson.lesson_id }}" width="500" height="330" src="{% static 'MohTech/videos/Screen Recording 2020-05-01 at 9.16.45 PM.mov' %}"></video>#}
+{##}
+{#            <button type="submit" id="watch_" class="btn btn-danger btn-sm" name="lesson_id" value="{{ the_lesson.lesson_id }}">تراجع</button>#}
+{#            {% else %}#}
+{#                        <p class="form-group"> you have completed {{ course_progress }}% </p>#}
+{##}
+{#                    <button type="submit" id="watch_" class="btn btn-primary btn-sm" name="lesson_id" value="{{ the_lesson.lesson_id }}">خلصت درسك يامبرمج ؟</button>#}
+{##}
+{#            {% endif %}#}
+        </form>
+
+
+{#<script>#}
+{#    alert("SDf");#}
+{#    let vid = document.getElementById('vid')#}
+{#    let i = setInterval(() => {#}
+{#        if(vid.readyState > 0){#}
+{#            let dur = parseInt(vid.duration);#}
+{#            #}
+{#        }#}
+{#        clearInterval(i)#}
+{#    }, 200);#}
+{#</script>#}
+</body>
+</html>

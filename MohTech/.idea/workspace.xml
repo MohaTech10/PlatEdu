@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="e3278c8a-52e5-4b6d-b80c-2cf23ab083c2" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/static/MohTech/css/progress_bar.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/MohTech/js/jquery.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/MohTech/js/main.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/MohTech/js/popper.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../static/images/Screen_Recording_2020-04-30_at_7.59.19_PM.mov" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../static/images/Screen_Recording_2020-05-03_at_12.52.53_AM_9wJ5hzy.mov" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../static/images/Screen_Recording_2020-05-04_at_9.17.31_PM.mov" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../static/images/Screen_Recording_2020-05-04_at_9.17.31_PM_7RDOPtH.mov" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../static/images/Screen_Recording_2020-05-04_at_9.17.31_PM_YUSdoND.mov" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../static/images/Screen_Recording_2020-05-04_at_9.17.31_PM_lig8oBM.mov" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../static/images/Screen_Recording_2020-05-04_at_9.17.31_PM_yr7I2D6.mov" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../templates/watch_or_not.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/signals.py" beforeDir="false" afterPath="$PROJECT_DIR$/signals.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/MohTech/img/flags.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/MohTech/img/posts.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/MohTech/img/sample.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../PlatEdu/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/../PlatEdu/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../PlatEdu/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/../PlatEdu/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/../db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../templates/Main.html" beforeDir="false" afterPath="$PROJECT_DIR$/../templates/Main.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../templates/NavBar.html" beforeDir="false" afterPath="$PROJECT_DIR$/../templates/NavBar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../templates/cart.html" beforeDir="false" afterPath="$PROJECT_DIR$/../templates/cart.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../templates/courses.html" beforeDir="false" afterPath="$PROJECT_DIR$/../templates/courses.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../templates/one_course.html" beforeDir="false" afterPath="$PROJECT_DIR$/../templates/one_course.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../templates/one_lesson.html" beforeDir="false" afterPath="$PROJECT_DIR$/../templates/one_lesson.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../templates/user_courses.html" beforeDir="false" afterPath="$PROJECT_DIR$/../templates/user_courses.html" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="1eTcSeOvxpH2lTBWfJTtTDx0l8H" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e3278c8a-52e5-4b6d-b80c-2cf23ab083c2" name="Default Changelist" comment="" />
+      <created>1594349024660</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1594349024660</updated>
+      <workItem from="1594349030468" duration="178000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+</project>
